@@ -1,113 +1,139 @@
-import React from 'react';
-import { MapPin, Globe, Stethoscope, ClipboardList, Mail, Phone, Youtube, Facebook, Instagram } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Globe, Stethoscope, ClipboardList, Mail, Phone, Youtube, Facebook, Instagram, ExternalLink, Calendar, Star } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import heroImage from '@/assets/clinic-hero.jpg';
 import clinicLogo from '@/assets/clinic-logo.jpg';
 
 const MedicalCard = () => {
-  const quickLinks = [
+  const [clickedButton, setClickedButton] = useState<string | null>(null);
+
+  const handleButtonClick = (title: string) => {
+    setClickedButton(title);
+    setTimeout(() => setClickedButton(null), 200);
+  };
+
+  const primaryLinks = [
     {
-      title: "Our Location",
-      icon: MapPin,
-      href: "https://maps.google.com",
-      description: "Find us on Google Maps"
-    },
-    {
-      title: "Visit Our Website",
-      icon: Globe,
-      href: "#website",
-      description: "Explore our services"
-    },
-    {
-      title: "Doctor Consultation",
+      title: "📞 Book Consultation",
       icon: Stethoscope,
       href: "#consultation",
-      description: "Book an appointment"
+      description: "Schedule with our doctors",
+      isPrimary: true
     },
     {
-      title: "Our Health Packages",
+      title: "🏥 Visit Our Website",
+      icon: Globe,
+      href: "#website",
+      description: "Explore all our services"
+    },
+    {
+      title: "📍 Find Our Location",
+      icon: MapPin,
+      href: "https://maps.google.com",
+      description: "Get directions to our clinic"
+    },
+    {
+      title: "📋 Health Packages",
       icon: ClipboardList,
       href: "#packages",
       description: "Comprehensive health plans"
+    },
+    {
+      title: "⭐ Patient Reviews",
+      icon: Star,
+      href: "#reviews",
+      description: "See what our patients say"
+    },
+    {
+      title: "📅 Emergency Services",
+      icon: Calendar,
+      href: "#emergency",
+      description: "24/7 emergency care"
     }
   ];
 
   const socialLinks = [
-    { name: "YouTube", icon: Youtube, href: "#youtube", color: "#FF0000" },
-    { name: "Facebook", icon: Facebook, href: "#facebook", color: "#1877F2" },
-    { name: "Instagram", icon: Instagram, href: "#instagram", color: "#E4405F" }
+    { name: "YouTube", icon: Youtube, href: "#youtube" },
+    { name: "Facebook", icon: Facebook, href: "#facebook" },
+    { name: "Instagram", icon: Instagram, href: "#instagram" }
   ];
 
   return (
-    <main className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <header className="relative h-[60vh] min-h-[400px] overflow-hidden">
-        <div className="absolute inset-0">
-          <img 
-            src={heroImage} 
-            alt="Modern Medex Multispecialty Clinic exterior"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/80 via-primary/70 to-primary-dark/90"></div>
-        </div>
-        
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-          {/* Clinic Logo */}
-          <div className="mb-6">
+    <main className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent/30 relative overflow-hidden">
+      {/* Background Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 rounded-full floating-animation"></div>
+        <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-primary/3 rounded-full floating-animation" style={{animationDelay: '2s'}}></div>
+      </div>
+
+      {/* Linktree-Style Header */}
+      <header className="relative z-10 pt-12 pb-6 px-6">
+        <div className="max-w-md mx-auto text-center">
+          {/* Profile Image */}
+          <div className="mb-6 relative">
             <img 
               src={clinicLogo}
-              alt="Medex Multispecialty Clinic Logo"
-              className="w-24 h-24 rounded-full border-4 border-white shadow-lg object-cover mx-auto"
+              alt="Medex Multispecialty Clinic"
+              className="profile-avatar mx-auto object-cover"
             />
+            <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center pulse-glow">
+              <div className="w-3 h-3 bg-white rounded-full"></div>
+            </div>
           </div>
           
-          {/* Clinic Name & Tagline */}
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 max-w-4xl">
+          {/* Clinic Info */}
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
             Medex Multispecialty Clinic
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 font-medium max-w-2xl">
-            Restoring Health, Transforming Lives
+          <p className="text-base text-muted-foreground mb-4 max-w-xs mx-auto">
+            🏥 Restoring Health, Transforming Lives
           </p>
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            Open Now • 24/7 Emergency
+          </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <section className="container mx-auto px-6 py-12 max-w-4xl">
-        {/* Quick Links Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-semibold text-foreground mb-8 text-center">
-            Quick Access
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {quickLinks.map((link, index) => (
-              <Card key={index} className="medical-card p-6 hover:scale-[1.02] cursor-pointer group">
-                <a href={link.href} className="block">
+      {/* Linktree-Style Links */}
+      <section className="max-w-md mx-auto px-6 pb-8">
+        <div className="space-y-4">
+          {primaryLinks.map((link, index) => (
+            <div
+              key={index}
+              className={`linktree-button group ${link.isPrimary ? 'bg-primary text-primary-foreground hover:bg-primary-dark border-primary' : ''} ${
+                clickedButton === link.title ? 'scale-95' : ''
+              }`}
+              onClick={() => handleButtonClick(link.title)}
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <a href={link.href} className="block">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
-                    <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                      <link.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
+                    <div className={`p-2 rounded-xl ${link.isPrimary ? 'bg-white/20' : 'bg-primary/10 group-hover:bg-primary-foreground'} transition-all`}>
+                      <link.icon className={`w-5 h-5 ${link.isPrimary ? 'text-white' : 'text-primary group-hover:text-primary'}`} />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                    <div className="text-left">
+                      <h3 className="font-semibold text-base leading-tight">
                         {link.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground">
+                      <p className={`text-sm ${link.isPrimary ? 'text-primary-foreground/80' : 'text-muted-foreground'} leading-tight`}>
                         {link.description}
                       </p>
                     </div>
                   </div>
-                </a>
-              </Card>
-            ))}
-          </div>
+                  <ExternalLink className={`w-4 h-4 ${link.isPrimary ? 'text-white/60' : 'text-muted-foreground group-hover:text-primary'} transition-colors`} />
+                </div>
+              </a>
+            </div>
+          ))}
         </div>
+      </section>
 
-        {/* Social Media Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-semibold text-foreground mb-8 text-center">
-            Connect With Us
-          </h2>
-          <div className="flex justify-center space-x-6">
+        {/* Social Media Icons */}
+        <div className="max-w-md mx-auto px-6 mb-8">
+          <div className="flex justify-center space-x-4">
             {socialLinks.map((social, index) => (
               <a
                 key={index}
@@ -121,38 +147,36 @@ const MedicalCard = () => {
           </div>
         </div>
 
-        {/* Contact Section */}
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-foreground mb-8">
-            Get In Touch
-          </h2>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Card className="medical-card p-4 hover:scale-105 cursor-pointer group">
-              <a href="mailto:info@medexclinic.com" className="flex items-center space-x-3">
-                <Mail className="w-5 h-5 text-primary group-hover:text-primary-dark transition-colors" />
-                <span className="text-foreground font-medium">info@medexclinic.com</span>
-              </a>
-            </Card>
+        {/* Contact Pills */}
+        <div className="max-w-md mx-auto px-6 mb-8">
+          <div className="flex flex-col gap-3">
+            <a href="mailto:info@medexclinic.com" className="contact-pill group">
+              <div className="flex items-center justify-center space-x-3">
+                <Mail className="w-4 h-4 text-primary transition-colors" />
+                <span className="text-foreground font-medium text-sm">info@medexclinic.com</span>
+              </div>
+            </a>
             
-            <Card className="medical-card p-4 hover:scale-105 cursor-pointer group">
-              <a href="tel:+1234567890" className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-primary group-hover:text-primary-dark transition-colors" />
-                <span className="text-foreground font-medium">+1 (234) 567-8900</span>
-              </a>
-            </Card>
+            <a href="tel:+1234567890" className="contact-pill group">
+              <div className="flex items-center justify-center space-x-3">
+                <Phone className="w-4 h-4 text-primary transition-colors" />
+                <span className="text-foreground font-medium text-sm">+1 (234) 567-8900</span>
+              </div>
+            </a>
           </div>
         </div>
-      </section>
 
       {/* Footer */}
-      <footer className="bg-secondary/30 py-8 mt-12">
-        <div className="container mx-auto px-6 text-center">
-          <p className="text-muted-foreground">
-            © 2024 Medex Multispecialty Clinic. All rights reserved.
-          </p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Professional healthcare services with compassionate care.
-          </p>
+      <footer className="relative z-10 pb-8">
+        <div className="max-w-md mx-auto px-6 text-center">
+          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 border border-border/30">
+            <p className="text-xs text-muted-foreground mb-1">
+              © 2024 Medex Multispecialty Clinic
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Professional healthcare • Compassionate care
+            </p>
+          </div>
         </div>
       </footer>
     </main>
